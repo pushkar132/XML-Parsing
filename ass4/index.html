@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XML to HTML Example</title>
+  <script>
+    function loadXML() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          displayCatalog(this.responseXML);
+        }
+      };
+      xhttp.open("GET", "books.xml", true);
+      xhttp.send();
+    }
+
+    function displayCatalog(xml) {
+      var catalog = xml.getElementsByTagName("catalog")[0];
+      var books = catalog.getElementsByTagName("book");
+
+      var output = document.getElementById("output");
+      output.innerHTML = "";
+
+      for (var i = 0; i < books.length; i++) {
+        var book = books[i];
+        var title = book.getElementsByTagName("title")[0].textContent;
+        var author = book.getElementsByTagName("author")[0].textContent;
+        var year = book.getElementsByTagName("year")[0].textContent;
+
+        var bookDiv = document.createElement("div");
+        bookDiv.innerHTML =
+          "<h2>" + title + "</h2>" +
+          "<p><strong>Author:</strong> " + author + "</p>" +
+          "<p><strong>Year:</strong> " + year + "</p>";
+
+        output.appendChild(bookDiv);
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>XML to HTML Example</h1>
+  <button onclick="loadXML()">Load Catalog</button>
+  <div id="output"></div>
+</body>
+</html>
